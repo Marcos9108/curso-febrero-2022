@@ -54,7 +54,7 @@ class EmpleadoController extends Controller
 
         Empleado::create($arrayUpdate);
 
-        return redirect()->route('empleado.index')->with('success','Reqgistro creado satisfactoriamente');
+        return redirect()->route('empleado.index')->with('success','Registro creado satisfactoriamente');
     }
 
     /**
@@ -93,7 +93,7 @@ class EmpleadoController extends Controller
         $this->validate($request,['nombre' => 'required', 'nombre' => 'required','edad' => 'required','puesto' => 'required','activo' => 'required','salario'=> 'required']);
         Empleado::find($id)->update($request->all());
 
-        return redirect()->route('Empleado.index')->with('success','Registro actualizado satisfactoriamente');
+        return redirect()->route('empleado.index')->with('success','Registro actualizado satisfactoriamente');
     }
 
     /**

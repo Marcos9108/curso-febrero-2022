@@ -1,12 +1,14 @@
 @extends('layouts.layout')
 @section('content')
-    @php
-    $nueva_variable = 'hola';
-    @endphp
 <div class="row">
     <section class="content">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-primary">
+                @if(\Illuminate\Support\Facades\Session::has('success'))
+                    <div class="alert alert-info">
+                        {{\Illuminate\Support\Facades\Session::get('success')}}
+                    </div>
+                @endif
                 <div class="panel-body">
                     <div><h3>Lista Empleados</h3></div>
 
@@ -36,7 +38,13 @@
                                         <td>{{$empleado->puesto}}</td>
                                         <td>{{$empleado->activo}}</td>
                                         <td>{{$empleado->salario}}</td>
-                                        <td>{{$nueva_variable}}</td>
+                                        <td>
+                                            <a class="btn btn-primary btn-xs" href="{{route('empleado.show', $empleado->id)}}" ><span class="glyphicon glyphicon-eye-open"></span></a>
+                                            <a class="btn btn-primary btn-xs" href="{{route('empleado.edit', $empleado->id)}}" ><span class="glyphicon glyphicon-edit"></span></a>
+
+
+
+                                        </td>
                                     </tr>
                                 @endforeach
                             @else
