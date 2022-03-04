@@ -50,6 +50,16 @@
                             </div>
 
                             <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-control">Estados</label>
+                                        <select class="form-control" id="estado" name="estado">
+                                            @foreach($lstEstados as $estado)
+                                                <option value="{{$estado->id_estado}}"> {{$estado->nombre}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="form-control">Activo</label>

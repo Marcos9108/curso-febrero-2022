@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Empleado;
 use Illuminate\Http\Request;
+use GuzzleHttp\Client as HttpClient;
 
 class EmpleadoController extends Controller
 {
+    public function __construct()
+    {
+        //Linea para agregar un Middleware a las funciones del controlador
+        $this->middleware('auth');
+        $this->middleware('authByName')->only('create','edit','destroy');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +33,8 @@ class EmpleadoController extends Controller
      */
     public function create()
     {
-        return view('Empleado.create');
+        $lstEstados = $this->obtenerEstadosWS();
+        return view('Empleado.create',compact('lstEstados'));
     }
 
     /**
@@ -36,20 +45,23 @@ class EmpleadoController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
 
         $this->validate($request,[
             'nombre' => 'required',
             'nombre' => 'required',
             'edad' => 'required',
             'puesto' => 'required',
-            'salario'=> 'required']);
+            'salario'=> 'required',
+            'estado'=> 'required']);
 
         $arrayUpdate =[
             'nombre' => $request->get("nombre"),
             'edad' => $request->get('edad'),
             'puesto' => $request->get('puesto'),
             'salario' => $request->get('salario'),
-            'activo' => $request->has('activo') ? $request->get('activo') : 0
+            'activo' => $request->has('activo') ? $request->get('activo') : 0,
+            'estado' => $request->get('estado')
         ];
 
         Empleado::create($arrayUpdate);
@@ -105,6 +117,15 @@ class EmpleadoController extends Controller
     public function destroy($id)
     {
         Empleado::find($id)->delete();
-        return redirect()->route('Empleado.index')->with('success','Registro eliminado satisfactoriamente');
+        return redirect()->route('empleado.index')->with('success','Registro eliminado satisfactoriamente');
+    }
+
+    private function obtenerEstadosWS(){
+
+        $client = new HttpClient(['base_uri' => 'https://beta-bitoo-back.azurewebsites.net/api/']);
+        $response = $client->request('POST',"proveedor/obtener/lista_estados");
+        //dd((json_decode($response->getBody())->data->lst_estado_proveedor));
+        return json_decode($response->getBody())->data->lst_estado_proveedor;
+
     }
 }

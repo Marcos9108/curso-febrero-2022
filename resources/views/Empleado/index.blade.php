@@ -42,6 +42,12 @@
                                             <a class="btn btn-primary btn-xs" href="{{route('empleado.show', $empleado->id)}}" ><span class="glyphicon glyphicon-eye-open"></span></a>
                                             <a class="btn btn-primary btn-xs" href="{{route('empleado.edit', $empleado->id)}}" ><span class="glyphicon glyphicon-edit"></span></a>
 
+                                            <form action="{{route('empleado.destroy', $empleado->id)}}" method="post">
+                                                {{csrf_field()}}
+                                                <input name="_method" type="hidden" value="DELETE">
+
+                                                <button class="btn btn-danger btn-xs" type="submit"><span class="glyphicon glyphicon-trash"></span></button>
+                                            </form>
 
 
                                         </td>
